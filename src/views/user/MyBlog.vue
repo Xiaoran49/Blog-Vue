@@ -48,7 +48,7 @@ export default {
           size: this.pageSize,
         }
       }).then((resp) => {
-        console.log(resp);
+        // console.log(resp);
         this.articles = resp.list;
         this.total = resp.total;
       }).catch((error) => {

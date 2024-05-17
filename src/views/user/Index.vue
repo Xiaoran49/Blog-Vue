@@ -16,7 +16,7 @@
           <el-card class="box1-card">
             <div slot="header" style="font-size: 18px;font-weight: bold">用户信息</div>
             <div class="user-info">
-              <img :src="require('@/assets/imgs/user.png')" alt="Image" style="width: 100px;height: 100px">
+              <img :src="imageUrl" alt="Image" style="width: 100px;height: 100px">
               <p style="margin: 10px 0px">昵称: {{ user.userNickName }}</p>
               <p style="margin: 10px 0px">邮箱: {{ user.userEmail }}</p>
               <p style="margin: 10px 0px">手机号: {{ user.userPhoneNumber }}</p>
@@ -28,12 +28,12 @@
             </div>
           </el-card>
         </div>
-        <div class="grid-content bg-purple4">
+        <div class="grid-content bg-purple1">
           <el-card class="box1-card" style="padding: 20px">
             <div slot="header" style="font-size: 18px;font-weight: bold">其他博主</div>
             <div class="user-info1" v-for="user in users" :key="user.id">
               <div class="user-item">
-                <el-avatar :src="require('@/assets/imgs/user.png')"></el-avatar>
+                <img :src="require('@/assets/imgs/user.png')" style="width: 50px;height: 50px">
                 <div class="info">
                   <p style="text-align: left">{{ user.userNickName }}</p>
                   <p style="text-align: left">{{ user.userEmail }}</p>
@@ -92,6 +92,7 @@ export default {
   data() {
     return {
       user: {},
+      imageUrl:'',
       users: [],
       search: '', //搜索条件
       total: 0, //默认总条数
@@ -105,11 +106,13 @@ export default {
   },
   methods: {
     loadData(){
-      this.$axios.get('/user/getOneUser',{
-        params:{
+      this.$axios.get('/user/getOneUser', {
+        params: {
           id: JSON.parse(sessionStorage.getItem('user')).userId,
-        }}).then((resp) => {
+        }
+      }).then((resp) => {
         this.user = resp;
+        this.imageUrl = require(`../../assets/uploadImgs/${this.user.avatar}`)
       }).catch((error) => {
         console.error(error);
       });
@@ -258,11 +261,15 @@ export default {
     margin-top: 20px;
   }
   .user-item {
+    width: 100%;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
+
   }
   .info {
+    width: 100%;
     margin-left: 10px;
   }
 

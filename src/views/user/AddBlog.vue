@@ -8,12 +8,16 @@
         <el-input type="textarea" v-model="article.articleContent" :rows="15"></el-input>
       </el-form-item>
       <el-form-item label="图片上传">
-        <el-upload class="avatar-uploader" action="/api/picture/pictureInsert"
-                   :show-file-list="false"
-                   :on-success="handleAvatarSuccess"
-                   :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"/>
+        <el-upload class="avatar-uploader"
+                   action=""
+                   :http-request="uploadFile"
+                   :multiple="false"
+                   :limit="1"
+                   :before-upload="beforeUpload"
+                   :on-success="uploadSuccess"
+                   :auto-upload="true"
+        >
+          <el-button size="mini" type="success">点击选择文件<i class="el-icon-upload el-icon--right"></i></el-button>
         </el-upload>
       </el-form-item>
       <el-form-item>
@@ -30,6 +34,7 @@ export default {
     return {
       article:{},
       imageUrl:'',
+      file:'',
     }
   },
   components: {},
@@ -42,6 +47,14 @@ export default {
           articleContent: this.article.articleContent,
           userId: JSON.parse(sessionStorage.getItem('user')).userId,
       }).then((resp) => {
+        //图片上传
+        const fd = new FormData()
+        fd.append('file',this.file);
+        fd.append('articleId', resp);
+        console.log(fd)
+        this.$axios.post(
+            '/picture/pictureInsert', fd
+        )
         this.$router.replace('/MyPage');
         this.$message({
           type: 'success',
@@ -51,26 +64,31 @@ export default {
       }).catch((error) => {
         console.error(error);
       });
+
     },
+
     resetForm(){
       this.article = {}
     },
     // 文件上传成功时的钩子
-    handleAvatarSuccess(res, file){
+    uploadSuccess(res, file){
       this.imageUrl = URL.createObjectURL(file.raw);
       console.log(file)
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 2;
       console.log(file)
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error('上传头像图片格式有误!');
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
+    },
+    uploadFile(files) {
+      this.file = files.file;
     },
   },
 }

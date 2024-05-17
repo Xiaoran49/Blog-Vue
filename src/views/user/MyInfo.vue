@@ -19,6 +19,20 @@
       <el-form-item label="用户签名">
         <el-input v-model="user.userIntroduce"></el-input>
       </el-form-item>
+      <el-form-item label="用户头像">
+<!--        <el-input v-model="user.avatar"></el-input>-->
+        <el-upload
+            class="avatar-uploader"
+            action=""
+            :http-request="uploadFile"
+            :limit="1"
+            :before-upload="beforeUpload"
+            :on-change="uploadChange"
+            :auto-upload="true">
+          <img v-if="imageUrl !== require(`../../assets/imgs/user.png`)" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
@@ -33,6 +47,7 @@ export default {
   data() {
     return {
       user: {},
+      imageUrl:''
     }
   },
   components: {},
@@ -46,22 +61,18 @@ export default {
         }
       }).then((resp) => {
         this.user = resp;
+        this.imageUrl = require(`../../assets/uploadImgs/${this.user.avatar}`)
       }).catch((error) => {
         console.error(error);
       });
     },
     submitForm(){
-      this.$axios.get('/user/userUpdate', {
-        params: {
-          userId: JSON.parse(sessionStorage.getItem('user')).userId,
-          userNickName: this.user.userNickName,
-          userEmail: this.user.userEmail,
-          userPhoneNumber: this.user.userPhoneNumber,
-          userSex: this.user.userSex,
-          userAge: this.user.userAge,
-          userIntroduce: this.user.userIntroduce,
-        }
-      }).then((resp) => {
+      //图片上传
+      const fd = new FormData()
+      fd.append('file',this.file);
+      fd.append('user',JSON.stringify(this.user))
+      console.log(fd)
+      this.$axios.post('/user/userUpdate', fd).then((resp) => {
         this.$message({
           type: 'success',
           message: '修改成功',
@@ -75,6 +86,36 @@ export default {
     resetForm(){
       this.user = {};
     },
+    uploadChange(res, file) {
+      // console.log(URL.createObjectURL(file.raw))
+      // console.log(res)
+      // console.log(file)
+      const file1 = event.target.files[0];
+
+      // 使用 FileReader 对象读取文件并生成数据 URL
+      const reader = new FileReader();
+      reader.onload = () => {
+        // 将生成的数据 URL 存储在组件的数据中
+        this.imageUrl = reader.result;
+      };
+      reader.readAsDataURL(file1);
+      // this.imageUrl = file.response
+    },
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    uploadFile(files) {
+      this.file = files.file;
+    },
   },
   created() {
     this.loadData();
@@ -84,5 +125,28 @@ export default {
 </script>
 <style scoped lang='scss'>
 .container {
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 }
 </style>

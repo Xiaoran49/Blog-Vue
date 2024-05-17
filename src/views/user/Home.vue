@@ -4,7 +4,7 @@
     <div class="left-panel">
       <div class="user-info">
         <div class="avatar">
-          <img src="@/assets/imgs/user.png" style="width: 500px">
+          <img :src="imageUrl" alt="" style="width: 500px">
         </div>
         <div class="stats">
           <div class="stat">
@@ -49,13 +49,24 @@
 export default {
   data() {
     return {
+      user: {},
+      imageUrl:'',
       commentCount: '',
       likeCount: '',
     };
   },
   methods: {
-
     loadData(){
+      this.$axios.get('/user/getOneUser', {
+        params: {
+          id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }
+      }).then((resp) => {
+        this.user = resp;
+        this.imageUrl = require(`../../assets/uploadImgs/${this.user.avatar}`)
+      }).catch((error) => {
+        console.error(error);
+      });
       this.$axios.get('/article/getLikeAndView',{
         params:{
           id: JSON.parse(sessionStorage.getItem('user')).userId,

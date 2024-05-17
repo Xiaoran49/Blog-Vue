@@ -1,6 +1,6 @@
 <template>
   <div class="data-statistics">
-    <el-row :gutter="20" class="fixed-row" style="margin-top: 0px">
+    <el-row :gutter="20" class="fixed-row" style="margin-top: 0">
       <el-col :span="8">
         <el-card class="stat-card">
           <div class="stat-header">
@@ -28,7 +28,7 @@
           <div class="stat-header">
             <i class="el-icon-chat-dot-round"></i>  系统公告
           </div>
-          <div class="stat-content" style="margin-top: 0px;padding: 10px">
+          <div class="stat-content" style="margin-top: 0;padding: 10px">
             <div class="overview">
               <el-table :data="announcement" :show-header="false" @row-click="handleRowClick" class="table-table">
                 <el-table-column prop="item"></el-table-column>
@@ -45,9 +45,13 @@
           <div class="stat-header">
             <i class="el-icon-pie-chart"></i>  数据分析
           </div>
-          <div class="stat-content" style="margin-top: 120px">
-            <h1 class="stat-number">{{ userCount }}</h1>
-            <p class="stat-description">当前用户总数</p>
+          <div class="stat-content" style="margin-top: 20px">
+            <div
+                class="echart"
+                ref="mychart"
+                id="mychart"
+                :style="{ width: '60%', height: '300px' , margin: '0 auto'}"
+            ></div>
           </div>
         </el-card>
       </el-col>
@@ -72,6 +76,7 @@
 </template>
 
 <script>
+import * as echarts from "echarts";
 
 export default {
   name: 'DataStatistics',
@@ -100,14 +105,13 @@ export default {
     loadData() {
       this.$axios.get('/user/getCountUser',).then((resp) => {
         this.userCount = resp;
+        return this.$axios.get('/article/getCountArt');
+      }).then((resp) => {
+        this.artcileCount = resp;
+        this.initEcharts(); // 在数据加载完成后调用初始化 echarts 方法
       }).catch((error) => {
         console.error(error);
       });
-      this.$axios.get('/article/getCountArt').then((resp)=>{
-        this.artcileCount = resp;
-      }).catch((error)=>{
-        console.error(error);
-      })
     },
     handleRowClick(row) {
       this.$confirm(row.content, row.item, {
@@ -120,9 +124,40 @@ export default {
         // 点击取消按钮后的操作
       });
     },
+    initEcharts() {
+      console.log(this.userCount)
+      console.log(this.artcileCount)
+      const option = {
+        tooltip: {},
+        legend: {
+          data: ["人数"]
+        },
+        xAxis: {
+          data: ["用户", "博客"]
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "人数",
+            type: "bar", //类型为柱状图
+            data: [this.userCount, this.artcileCount]
+          }
+        ]
+      };
+      const myChart = echarts.init(this.$refs.mychart);// 图标初始化
+      myChart.setOption(option);// 渲染页面
+      //随着屏幕大小调节图表
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    }
+
   },
   created() {
     this.loadData();
+  },
+  mounted() {
+    this.initEcharts();
   }
 };
 </script>
@@ -166,7 +201,7 @@ export default {
   padding: 20px;
 }
 
-.overview, .main-functions {
+.overview{
   margin-bottom: 20px;
 }
 
