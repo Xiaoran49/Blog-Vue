@@ -62,6 +62,7 @@ export default {
       }).then((resp) => {
         this.user = resp;
         this.imageUrl = require(`../../assets/uploadImgs/${this.user.avatar}`)
+        console.log(this.imageUrl)
       }).catch((error) => {
         console.error(error);
       });

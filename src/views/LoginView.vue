@@ -158,7 +158,7 @@ $light_gray: #eee;
   min-height: 100%;
   width: 100%;
   overflow: hidden;
-  background-color: #3b3c3d;
+  background-color: #f5f4f1;
   background-size: 100% 100%;
   .copyright {
     position: absolute;
@@ -209,7 +209,7 @@ $light_gray: #eee;
 
     .title {
       font-size: 30px;
-      color: $light_gray;
+      color: $dark_gray;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: 500;

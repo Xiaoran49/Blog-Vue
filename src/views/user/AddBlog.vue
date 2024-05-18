@@ -42,19 +42,15 @@ export default {
   },
   methods: {
     submitForm(){
-      this.$axios.post('/article/articleInsert', {
-          articleTitle: this.article.articleTitle,
-          articleContent: this.article.articleContent,
-          userId: JSON.parse(sessionStorage.getItem('user')).userId,
-      }).then((resp) => {
-        //图片上传
-        const fd = new FormData()
-        fd.append('file',this.file);
-        fd.append('articleId', resp);
-        console.log(fd)
-        this.$axios.post(
-            '/picture/pictureInsert', fd
-        )
+      this.article.userId = JSON.parse(sessionStorage.getItem('user')).userId
+      // console.log(this.article)
+      const fd = new FormData()
+      fd.append('file',this.file);
+      fd.append('article', JSON.stringify(this.article));
+      console.log(fd)
+      this.$axios.post(
+          '/article/articleInsert', fd
+      ).then((resp) => {
         this.$router.replace('/MyPage');
         this.$message({
           type: 'success',
@@ -64,9 +60,7 @@ export default {
       }).catch((error) => {
         console.error(error);
       });
-
     },
-
     resetForm(){
       this.article = {}
     },
@@ -80,10 +74,10 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2;
       console.log(file)
       if (!isJPG) {
-        this.$message.error('上传头像图片格式有误!');
+        this.$message.error('上传图片格式有误!');
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
     },

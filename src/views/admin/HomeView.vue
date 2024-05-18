@@ -10,7 +10,7 @@
           <span>博客后台管理系统</span>
         </div>
         <!-- 菜单栏 -->
-        <el-menu default-active="/index" background-color="#FF80AB" text-color="#fff" active-text-color="#ffd04b" active-background-color="#FF80AB" @select="handleMenuSelect">
+        <el-menu default-active="/index" background-color="#cccbc8" text-color="#000" active-text-color="#ffd04b" active-background-color="#fffefb" @select="handleMenuSelect">
           <el-menu-item index="/index">
             <i class="el-icon-s-home"></i>
             <span slot="title">系统首页</span>
@@ -112,7 +112,7 @@ export default {
     height: 100%;
   }
   .el-header {
-    background-color: #FCE4EC;
+    background-color: #f5f4f1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -132,13 +132,14 @@ export default {
     }
   }
   .el-aside {
+    color: #000;
     height: 100%;
-    background-color: #FF80AB;
+    background-color: #cccbc8;
     .el-menu {
       border-right: none;
     }
     div {
-      color: #fff;
+      color: #000;
       padding: 15px 0;
       font-size: 20px;
       display: flex;
