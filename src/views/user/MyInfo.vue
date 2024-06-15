@@ -20,15 +20,15 @@
         <el-input v-model="user.userIntroduce"></el-input>
       </el-form-item>
       <el-form-item label="用户头像">
-<!--        <el-input v-model="user.avatar"></el-input>-->
+        <!--        <el-input v-model="user.avatar"></el-input>-->
         <el-upload
-            class="avatar-uploader"
-            action=""
+            :auto-upload="true"
+            :before-upload="beforeUpload"
             :http-request="uploadFile"
             :limit="1"
-            :before-upload="beforeUpload"
             :on-change="uploadChange"
-            :auto-upload="true">
+            action=""
+            class="avatar-uploader">
           <img v-if="imageUrl !== require(`../../assets/imgs/user.png`)" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
@@ -47,14 +47,14 @@ export default {
   data() {
     return {
       user: {},
-      imageUrl:''
+      imageUrl: ''
     }
   },
   components: {},
   mounted() {
   },
   methods: {
-    loadData(){
+    loadData() {
       this.$axios.get('/user/getOneUser', {
         params: {
           id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -67,12 +67,13 @@ export default {
         console.error(error);
       });
     },
-    submitForm(){
+    submitForm() {
       //图片上传
       const fd = new FormData()
-      fd.append('file',this.file);
-      fd.append('user',JSON.stringify(this.user))
+      fd.append('file', this.file);
+      fd.append('user', JSON.stringify(this.user))
       console.log(fd)
+      console.log(this.user)
       this.$axios.post('/user/userUpdate', fd).then((resp) => {
         this.$message({
           type: 'success',
@@ -84,15 +85,11 @@ export default {
         console.error(error);
       });
     },
-    resetForm(){
+    resetForm() {
       this.user = {};
     },
     uploadChange(res, file) {
-      // console.log(URL.createObjectURL(file.raw))
-      // console.log(res)
-      // console.log(file)
       const file1 = event.target.files[0];
-
       // 使用 FileReader 对象读取文件并生成数据 URL
       const reader = new FileReader();
       reader.onload = () => {
@@ -124,7 +121,7 @@ export default {
 }
 
 </script>
-<style scoped lang='scss'>
+<style lang='scss' scoped>
 .container {
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
@@ -133,9 +130,11 @@ export default {
     position: relative;
     overflow: hidden;
   }
+
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
+
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -144,6 +143,7 @@ export default {
     line-height: 178px;
     text-align: center;
   }
+
   .avatar {
     width: 178px;
     height: 178px;

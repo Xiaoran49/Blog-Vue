@@ -18,13 +18,13 @@
     </div>
     <!--el分页插件-->
     <el-pagination
-        layout="prev, pager, next"
-        :total="total"
-        :page-size="pageSize"
         :current-page="pageNum"
-        @current-change="pageChange"
+        :page-size="pageSize"
+        :total="total"
         class="fixed-pagination"
-        style="text-align: center;margin: 20px 0px 10px 0px"/>
+        layout="prev, pager, next"
+        style="text-align: center;margin: 20px 0px 10px 0px"
+        @current-change="pageChange"/>
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
       articles: [],
     };
   },
-  methods:{
+  methods: {
     loadData() {
       this.$axios.get('/comment/getCommentArticles', {
         params: {
@@ -55,7 +55,7 @@ export default {
         console.error(error);
       });
     },
-    pageChange(val){
+    pageChange(val) {
       this.pageNum = val;
       this.loadData(this.search, this.pageNum, this.pageSize);
     }
@@ -67,7 +67,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .container {
   width: 100%;
   height: 100%;
@@ -128,10 +128,12 @@ export default {
 .article-comments {
   margin-right: 10px;
 }
+
 .article-date,
-article-author{
+article-author {
   padding: 0 10px;
 }
+
 /* Custom link styles */
 a {
   text-decoration: none !important;
@@ -149,9 +151,11 @@ a:active {
 a:focus {
   outline: none;
 }
-.el-pagination{
+
+.el-pagination {
   margin: 0px;
 }
+
 .el-pagination {
   position: fixed; /* 固定定位 */
   bottom: 30px; /* 距离底部20px */
