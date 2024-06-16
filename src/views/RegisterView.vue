@@ -122,6 +122,7 @@ export default {
       }
     },
     registe() {
+      console.log(this.user)
       // 首先进行基本的非空验证
       if (!this.user.userNickName || !this.user.userName || !this.user.userPassword || !this.user.confirmUserPassword || !this.user.userEmail || !this.user.userPhoneNumber || !this.user.userSex || !this.user.userAge || !this.user.userIntroduce) {
         this.$message({type:'error',message:'请填写完整信息',duration:1000});
@@ -236,7 +237,7 @@ $light_gray: #eee;
   min-height: 100%;
   width: 100%;
   overflow: hidden;
-  background-color: #f5f4f1;
+  background-color: #505050;
   background-size: 100% 100%;
   .copyright {
     position: absolute;

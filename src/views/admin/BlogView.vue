@@ -116,26 +116,9 @@
           </el-col>
         </el-row>
       </div>
-<!--      <div class="drawer-content">-->
-<!--        <div class="article-info">-->
-<!--          <div class="article-title">文章标题：{{ article.articleTitle }}</div>-->
-<!--          <div class="article-content">文章内容：{{ article.articleContent }}</div>-->
-<!--        </div>-->
-<!--        <div class="buttons">-->
-<!--          <el-button @click="showLikes(article.articleId)" class="drawer-button">点赞列表</el-button>-->
-<!--          <el-button @click="showComments(article.articleId)" class="drawer-button">评论列表</el-button>-->
-<!--        </div>-->
-<!--        <div class="likes-comments" v-show="showLikesPage || showCommentsPage">-->
-<!--          <h3 v-show="showLikesPage">点赞的人：</h3>-->
-<!--          <h3 v-show="showCommentsPage">评论的人：</h3>-->
-<!--          <ul>-->
-<!--            <li v-for="liker in showLikesPeople" v-show="showLikesPage">{{ liker.userNickName }}</li>-->
-<!--            <li v-for="commenter in showCommentsPeople" v-show="showCommentsPage">{{ commenter.userNickName }}{{commenter.commentContent}}</li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--      </div>-->
+
     </el-drawer>
-		<!-- 添加员工的模态框 -->
+		<!-- 模态框 -->
 		<el-dialog :visible.sync="ModalVisible" :title="isEdit ? '修改博客信息' : '添加博客'" width="500px">
 			<el-form :model="article" label-width="100px"
 				style="display: flex; flex-direction: column; align-items: center;">

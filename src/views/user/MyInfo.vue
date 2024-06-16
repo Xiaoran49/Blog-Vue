@@ -50,9 +50,6 @@ export default {
       imageUrl: ''
     }
   },
-  components: {},
-  mounted() {
-  },
   methods: {
     loadData() {
       this.$axios.get('/user/getOneUser', {
@@ -72,8 +69,6 @@ export default {
       const fd = new FormData()
       fd.append('file', this.file);
       fd.append('user', JSON.stringify(this.user))
-      console.log(fd)
-      console.log(this.user)
       this.$axios.post('/user/userUpdate', fd).then((resp) => {
         this.$message({
           type: 'success',

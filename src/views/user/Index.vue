@@ -33,10 +33,10 @@
             <div slot="header" style="font-size: 18px;font-weight: bold">其他博主</div>
             <div class="user-info1" v-for="user in users" :key="user.id">
               <div class="user-item">
-                <img :src="require('@/assets/imgs/user.png')" style="width: 50px;height: 50px">
+                <img :src="getAvatarUrl(user.avatar)" style="width: 50px;height: 50px">
                 <div class="info">
-                  <p style="text-align: left">{{ user.userNickName }}</p>
-                  <p style="text-align: left">{{ user.userEmail }}</p>
+                  <p style="text-align: left;margin-bottom: 5px">{{ user.userNickName }}</p>
+                  <p style="text-align: left;margin-top: 5px">{{ user.userEmail }}</p>
                 </div>
               </div>
             </div>
@@ -125,7 +125,11 @@ export default {
       }).catch((error) => {
         console.error(error);
       });
-      this.$axios.get('/user/userSelectAll').then((resp) => {
+      this.$axios.get('/user/userSelectAll',{
+        params:{
+          id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }
+      }).then((resp) => {
         this.users = resp;
       });
       this.$axios.get('/article/getThreeArt').then((resp)=>{
@@ -147,6 +151,9 @@ export default {
       // sessionStorage.clear();  //清除所有sessionStorage
       this.$router.push('/');
     },
+    getAvatarUrl(filename) {
+      return require(`@/assets/uploadImgs/${filename}`);
+    }
   },
 
   created() {

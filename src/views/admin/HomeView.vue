@@ -10,15 +10,11 @@
           <span>博客后台管理系统</span>
         </div>
         <!-- 菜单栏 -->
-        <el-menu default-active="/index" background-color="#cccbc8" text-color="#000" active-text-color="#ffd04b" active-background-color="#fffefb" @select="handleMenuSelect">
+        <el-menu default-active="/index" background-color="#cccbc8" text-color="#000" active-text-color="#80b3e7" @select="handleMenuSelect">
           <el-menu-item index="/index">
             <i class="el-icon-s-home"></i>
             <span slot="title">系统首页</span>
           </el-menu-item>
-<!--          <el-menu-item index="/powerManage">-->
-<!--            <i class="el-icon-remove"></i>-->
-<!--            <span slot="title">权限管理</span>-->
-<!--          </el-menu-item>-->
           <el-submenu index>
             <template slot="title">
               <i class="el-icon-folder-opened"></i>
@@ -137,6 +133,9 @@ export default {
     background-color: #cccbc8;
     .el-menu {
       border-right: none;
+    }
+    .el-menu-item.is-active {
+      background-color: #f5f4f1 !important; /* 你想要的激活背景颜色 */
     }
     div {
       color: #000;

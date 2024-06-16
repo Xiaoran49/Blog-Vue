@@ -158,7 +158,7 @@ $light_gray: #eee;
   min-height: 100%;
   width: 100%;
   overflow: hidden;
-  background-color: #f5f4f1;
+  background-color: #505050;
   background-size: 100% 100%;
   .copyright {
     position: absolute;
@@ -175,8 +175,8 @@ $light_gray: #eee;
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 1px solid #409eff;
-    box-shadow: 0 0 10px #409eff;
+    border: 1px solid #fff;
+    box-shadow: 0 0 10px #fff;
     position: relative;
     bottom: 20px;
     img {
@@ -198,7 +198,7 @@ $light_gray: #eee;
 
   .svg-container {
     padding: 6px 5px 6px 15px;
-    color: $dark_gray;
+    color: $light_gray;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
@@ -209,7 +209,7 @@ $light_gray: #eee;
 
     .title {
       font-size: 30px;
-      color: $dark_gray;
+      color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: 500;

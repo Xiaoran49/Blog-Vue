@@ -8,7 +8,6 @@
         <el-input type="textarea" v-model="article.articleContent" :rows="15"></el-input>
       </el-form-item>
       <el-form-item label="文章图片">
-        <!--        <el-input v-model="user.avatar"></el-input>-->
         <el-upload
             class="avatar-uploader"
             action=""
@@ -55,13 +54,10 @@ export default {
       });
     },
     submitForm() {
-      this.$axios.get('/article/articleUpdate', {
-        params: {
-          articleId:this.article.articleId,
-          articleTitle: this.article.articleTitle,
-          articleContent: this.article.articleContent,
-        }
-      }).then((resp) => {
+      const fd = new FormData()
+      fd.append('file', this.file);
+      fd.append('article', JSON.stringify(this.article))
+      this.$axios.post('/article/articleUpdate', fd).then((resp) => {
         this.$router.replace('/MyPage');
         this.$message({
           type: 'success',

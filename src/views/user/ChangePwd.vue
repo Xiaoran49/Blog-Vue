@@ -36,7 +36,7 @@ export default {
   methods: {
     submitForm(){
       //MD5加密存储
-      console.log(this.$md5(this.password.oldPassword))
+      // console.log(this.$md5(this.password.oldPassword))
       if (this.$md5(this.password.oldPassword) != JSON.parse(sessionStorage.getItem('user')).userPassword){
         this.$message({
           type: 'error',
@@ -50,7 +50,8 @@ export default {
           duration: 1000,
         });
       }else {
-        this.$axios.get('/user/userUpdate', {
+
+        this.$axios.get('/user/userUpdatePwd', {
           params: {
             userId: JSON.parse(sessionStorage.getItem('user')).userId,
             userPassword: this.password.newPassword,
